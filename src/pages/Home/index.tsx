@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 import {
   Container,
@@ -11,6 +12,8 @@ import {
 } from "./styles";
 
 const Home: React.FC = () => {
+  const navigation = useNavigation();
+
   return (
     <Container>
       <Header>
@@ -19,7 +22,7 @@ const Home: React.FC = () => {
       </Header>
       <Footer source={require("../../assets/bloob.png")}>
         <Img source={require("../../assets/toilet.png")} />
-        <Button>
+        <Button onPress={() => navigation.navigate("Find")}>
           <ButtonText>Procurar</ButtonText>
         </Button>
       </Footer>

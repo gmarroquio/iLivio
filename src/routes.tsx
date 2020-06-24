@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 const Routes: React.FC = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator headerMode="none">
+      <Stack.Navigator headerMode="none" initialRouteName={"Add"}>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Find" component={Find} />
         <Stack.Screen name="Add" component={Add} />
