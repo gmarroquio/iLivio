@@ -23,6 +23,8 @@ import {
 
 const Add: React.FC = () => {
   const navigation = useNavigation();
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
   const [options, setOptions] = useState([
     { name: "Papel", value: false, key: "paper" },
     { name: "Ducha", value: false, key: "douche" },
@@ -44,6 +46,13 @@ const Add: React.FC = () => {
     setOptions(newOptions);
   };
 
+  const handleChangeName = (e: string) => {
+    setName(e);
+  };
+  const handleChangePrice = (e: string) => {
+    setPrice(e);
+  };
+
   return (
     <Container>
       <Header>
@@ -52,7 +61,7 @@ const Add: React.FC = () => {
         </TouchableOpacity>
       </Header>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Name />
+        <Name onChangeText={handleChangeName} />
         <Img />
         <Map />
         <Options>
@@ -72,7 +81,7 @@ const Add: React.FC = () => {
         </Options>
         <PriceWrapper>
           <Currency>R$</Currency>
-          <Price keyboardType="numeric" />
+          <Price keyboardType="numeric" onChangeText={handleChangePrice} />
         </PriceWrapper>
         <Rating>5/5</Rating>
       </ScrollView>

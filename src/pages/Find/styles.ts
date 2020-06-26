@@ -15,13 +15,13 @@ export const Header = styled.View`
   justify-content: space-between;
 `;
 
-export const Map = styled.View`
+export const MapContainer = styled.View`
   margin: 20px 0;
-  background: ${colors.secondary};
   border: 3px solid ${colors.primary};
   border-radius: 8px;
   width: 100%;
   height: 75%;
+  overflow: hidden;
 `;
 
 export const FlatListContainer = styled.View`
