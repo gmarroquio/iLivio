@@ -23,14 +23,6 @@ export const Img = styled.TouchableOpacity`
   height: 220px;
 `;
 
-export const Map = styled.View`
-  margin-top: 20px;
-  background: ${colors.backup1};
-  border-radius: 8px;
-  width: 100%;
-  height: 300px;
-`;
-
 export const Options = styled.View`
   margin-top: 20px;
   width: 100%;
@@ -40,9 +32,11 @@ export const Options = styled.View`
 `
 
 export const Option = styled.View`
-  flex-direction: row;
   margin: 5px 0;
+  padding: 5px;
   align-items: center;
+  background: ${colors.background};
+  border-radius: 8px;
 `
 
 export const OptionText = styled.Text`
@@ -72,14 +66,14 @@ export const Currency = styled.Text`
   font-weight: bold;
 `;
 
-export const Price = styled.TextInput`
+export const Price = styled.Text`
   flex: 1;
   color: #fff;
   font-weight: bold;
   font-size: 18px;
 `;
 
-export const Name = styled.TextInput`
+export const Name = styled.Text`
   background: ${colors.primary};
   border-radius: 8px;
   margin-top: 20px;
@@ -87,6 +81,7 @@ export const Name = styled.TextInput`
   color: #fff;
   font-weight: bold;
   font-size: 18px;
+  text-align: center;
 `;
 
 export const Rating = styled.Text`

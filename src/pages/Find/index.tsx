@@ -13,7 +13,7 @@ import {
 } from "./styles";
 
 const Find: React.FC = () => {
-  const filter = ["Gender", "Price", "Paper", "Disabled"];
+  const filter = ["Genero", "Preco", "Papel", "Deficiente"];
   const navigation = useNavigation();
 
   const renderFilters = ({ item }: { item: string }) => (

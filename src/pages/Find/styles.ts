@@ -17,7 +17,7 @@ export const Header = styled.View`
 
 export const Map = styled.View`
   margin: 20px 0;
-  background: ${colors.backup1};
+  background: ${colors.secondary};
   border: 3px solid ${colors.primary};
   border-radius: 8px;
   width: 100%;
