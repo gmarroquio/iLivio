@@ -24,23 +24,26 @@ export const MapContainer = styled.View`
   overflow: hidden;
 `;
 
-export const FlatListContainer = styled.View`
-  margin: 20px 0;
-  width: 100%;
-  height: 12%;
+export const FilterContainer = styled.View`
+  flex-direction: row;
+  margin: 16px 0 32px;
 `;
 
-export const Filter = styled.TouchableOpacity`
-  background: ${colors.primary};
-  width: 20%;
+export const FilterScroll = styled.ScrollView``
+
+interface Filter {
+  active: boolean
+}
+
+export const Filter = styled.TouchableOpacity<Filter>`
+  background: ${props => props.active ? colors.primary : `${colors.primary}aa`};
+  height: 100px;
+  width: 100px;
   border-radius: 8px;
-  margin-left: 5px;
-  margin-right: 5px;
-  padding: 5px 10px;
+  padding: 20px;
+  margin-right: 8px;
   align-items: center;
   justify-content: center;
-  height: 80px;
-  width: 100px;
 `;
 
 export const FilterText = styled.Text`

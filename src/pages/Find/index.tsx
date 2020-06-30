@@ -1,94 +1,88 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, TouchableOpacity, Alert } from "react-native";
+import { TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
+import { SvgXml } from "react-native-svg";
 
 import {
   Container,
   Header,
   MapContainer,
-  FlatListContainer,
+  FilterContainer,
+  FilterScroll,
   Filter,
   FilterText,
 } from "./styles";
 
+import paperIcon from "../../assets/toilet-paper.svg";
+import disabledIcon from "../../assets/disabled.svg";
+import manIcon from "../../assets/man-sign.svg";
+import womanIcon from "../../assets/woman-sign.svg";
+import showerIcon from "../../assets/shower.svg";
+import urinalIcon from "../../assets/urinal.svg";
+
 interface Filter {
   name: string;
-  value: boolean;
   key: string;
+  icon: string;
+}
+
+interface Point {
+  id: number;
+  options: {
+    name: string;
+    key: string;
+  }[];
+  locale: { latitude: number; longitude: number };
 }
 
 const Find: React.FC = () => {
-  const points = [
+  const [points, setPoints] = useState<Point[]>([
     {
       id: 1,
       options: [
-        { name: "Papel", value: true, key: "paper" },
-        { name: "Ducha", value: false, key: "douche" },
-        { name: "Deficiente", value: false, key: "disabled" },
-        { name: "Masculino", value: true, key: "male" },
-        { name: "Feminino", value: false, key: "female" },
-        { name: "Mictorio", value: true, key: "urinal" },
-        { name: "Chuveiro", value: false, key: "shower" },
+        { name: "Papel", key: "paper" },
+        { name: "Masculino", key: "male" },
+        { name: "Mictorio", key: "urinal" },
       ],
       locale: { latitude: -20.836338, longitude: -41.127478 },
     },
     {
       id: 2,
       options: [
-        { name: "Papel", value: true, key: "paper" },
-        { name: "Ducha", value: false, key: "douche" },
-        { name: "Deficiente", value: false, key: "disabled" },
-        { name: "Masculino", value: false, key: "male" },
-        { name: "Feminino", value: true, key: "female" },
-        { name: "Mictorio", value: false, key: "urinal" },
-        { name: "Chuveiro", value: false, key: "shower" },
+        { name: "Papel", key: "paper" },
+        { name: "Feminino", key: "female" },
       ],
       locale: { latitude: -20.836498, longitude: -41.127727 },
     },
     {
       id: 3,
       options: [
-        { name: "Papel", value: true, key: "paper" },
-        { name: "Ducha", value: false, key: "douche" },
-        { name: "Deficiente", value: true, key: "disabled" },
-        { name: "Masculino", value: true, key: "male" },
-        { name: "Feminino", value: true, key: "female" },
-        { name: "Mictorio", value: true, key: "urinal" },
-        { name: "Chuveiro", value: false, key: "shower" },
+        { name: "Papel", key: "paper" },
+        { name: "Deficiente", key: "disabled" },
+        { name: "Masculino", key: "male" },
+        { name: "Feminino", key: "female" },
+        { name: "Mictorio", key: "urinal" },
       ],
       locale: { latitude: -20.836984, longitude: -41.128175 },
     },
-  ];
-  const [filters, setFilters] = useState([
-    { name: "Papel", value: false, key: "paper" },
-    { name: "Ducha", value: false, key: "douche" },
-    { name: "Deficiente", value: false, key: "disabled" },
-    { name: "Masculino", value: false, key: "male" },
-    { name: "Feminino", value: false, key: "female" },
-    { name: "Mictorio", value: false, key: "urinal" },
-    { name: "Chuveiro", value: false, key: "shower" },
   ]);
+  const [filters, setFilters] = useState<Filter[]>([
+    { name: "Papel", key: "paper", icon: paperIcon },
+    { name: "Masculino", key: "male", icon: manIcon },
+    { name: "Feminino", key: "female", icon: womanIcon },
+    { name: "Deficiente", key: "disabled", icon: disabledIcon },
+    { name: "Mictorio", key: "urinal", icon: urinalIcon },
+    { name: "Chuveiro", key: "shower", icon: showerIcon },
+  ]);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const navigation = useNavigation();
   const [initialPosition, setInitialPosition] = useState<[number, number]>([
     0,
     0,
   ]);
-
-  const renderFilters = ({ item }: { item: Filter }) => (
-    <Filter onPress={() => handleCheck(item)}>
-      <FilterText>{item.name}</FilterText>
-    </Filter>
-  );
-
-  const handleCheck = (filter: Filter) => {
-    const newFilter = filters.map((f) =>
-      f.key === filter.key ? { name: f.name, value: !f.value, key: f.key } : f
-    );
-    setFilters(newFilter);
-  };
 
   useEffect(() => {
     const loadPos = async () => {
@@ -99,14 +93,35 @@ const Find: React.FC = () => {
         return;
       }
 
-      const location = await Location.getCurrentPositionAsync();
+      // const location = await Location.getCurrentPositionAsync();
 
-      const { latitude, longitude } = location.coords;
-      setInitialPosition([latitude, longitude]);
+      // const { latitude, longitude } = location.coords;
+      // setInitialPosition([latitude, longitude]);
+      setInitialPosition([-20.8368359, -41.1270382]);
     };
 
     loadPos();
   }, []);
+
+  const handleCheck = (filter: string) => {
+    const index = selectedFilters.findIndex((item) => item === filter);
+    if (index >= 0) {
+      const filtered = selectedFilters.filter((item) => item !== filter);
+      setSelectedFilters(filtered);
+    } else {
+      setSelectedFilters([...selectedFilters, filter]);
+    }
+  };
+
+  useEffect(() => {
+    // api
+    //   .get("points", {
+    //     params: {
+    //       items: selectedFilters,
+    //     },
+    //   })
+    //   .then((response) => setPoints(response.data));
+  }, [selectedFilters]);
 
   return (
     <Container>
@@ -131,7 +146,6 @@ const Find: React.FC = () => {
             }}
           >
             {points.map((point) => (
-              // point.options.reduce(, true)
               <Marker
                 key={String(point.id)}
                 icon={require("../../assets/pin.png")}
@@ -141,16 +155,20 @@ const Find: React.FC = () => {
           </MapView>
         )}
       </MapContainer>
-      <FlatListContainer>
-        <FlatList
-          contentContainerStyle={{ alignItems: "center" }}
-          keyExtractor={(item) => String(item.key)}
-          renderItem={renderFilters}
-          showsHorizontalScrollIndicator={false}
-          data={filters}
-          horizontal
-        />
-      </FlatListContainer>
+      <FilterContainer>
+        <FilterScroll horizontal showsHorizontalScrollIndicator={false}>
+          {filters.map((filter) => (
+            <Filter
+              key={filter.key}
+              onPress={() => handleCheck(filter.key)}
+              active={selectedFilters.includes(filter.key)}
+            >
+              <SvgXml xml={filter.icon} height={50} width={50} />
+              {/* <FilterText>{filter.name}</FilterText> */}
+            </Filter>
+          ))}
+        </FilterScroll>
+      </FilterContainer>
     </Container>
   );
 };

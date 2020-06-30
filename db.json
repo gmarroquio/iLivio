@@ -1,0 +1,52 @@
+{
+  "filters": [
+    { "name": "Papel", "key": "paper" },
+    { "name": "Ducha", "key": "douche" },
+    { "name": "Deficiente", "key": "disabled" },
+    { "name": "Masculino", "key": "male" },
+    { "name": "Feminino", "key": "female" },
+    { "name": "Mictorio", "key": "urinal" },
+    { "name": "Chuveiro", "key": "shower" }
+  ],
+  "points": [
+    {
+      "id": 1,
+      "options": [
+        { "name": "Papel", "value": true, "key": "paper" },
+        { "name": "Ducha", "value": false, "key": "douche" },
+        { "name": "Deficiente", "value": false, "key": "disabled" },
+        { "name": "Masculino", "value": true, "key": "male" },
+        { "name": "Feminino", "value": false, "key": "female" },
+        { "name": "Mictorio", "value": true, "key": "urinal" },
+        { "name": "Chuveiro", "value": false, "key": "shower" }
+      ],
+      "locale": { "latitude": -20.836338, "longitude": -41.127478 }
+    },
+    {
+      "id": 2,
+      "options": [
+        { "name": "Papel", "value": true, "key": "paper" },
+        { "name": "Ducha", "value": false, "key": "douche" },
+        { "name": "Deficiente", "value": false, "key": "disabled" },
+        { "name": "Masculino", "value": false, "key": "male" },
+        { "name": "Feminino", "value": true, "key": "female" },
+        { "name": "Mictorio", "value": false, "key": "urinal" },
+        { "name": "Chuveiro", "value": false, "key": "shower" }
+      ],
+      "locale": { "latitude": -20.836498, "longitude": -41.127727 }
+    },
+    {
+      "id": 3,
+      "options": [
+        { "name": "Papel", "value": true, "key": "paper" },
+        { "name": "Ducha", "value": false, "key": "douche" },
+        { "name": "Deficiente", "value": true, "key": "disabled" },
+        { "name": "Masculino", "value": true, "key": "male" },
+        { "name": "Feminino", "value": true, "key": "female" },
+        { "name": "Mictorio", "value": true, "key": "urinal" },
+        { "name": "Chuveiro", "value": false, "key": "shower" }
+      ],
+      "locale": { "latitude": -20.836984, "longitude": -41.128175 }
+    }
+  ]
+}

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Image, View, TouchableOpacity } from "react-native";
+import React from "react";
+import { Image, TouchableOpacity } from "react-native";
 
 interface Checkbox {
   size: number;
@@ -25,7 +25,7 @@ const Checkbox: React.FC<Checkbox> = ({
         width: size,
         borderColor: borderColor ? borderColor : "#fff",
         borderWidth: 2,
-        borderRadius: 4,
+        borderRadius: 8,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: backgroundColor ? backgroundColor : "transparent",

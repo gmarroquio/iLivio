@@ -23,12 +23,13 @@ export const Img = styled.TouchableOpacity`
   height: 220px;
 `;
 
-export const Map = styled.View`
-  margin-top: 20px;
-  background: ${colors.backup1};
+export const MapContainer = styled.View`
   border-radius: 8px;
-  width: 100%;
   height: 300px;
+  margin-top: 20px;
+  border: 3px solid ${colors.primary};
+  width: 100%;
+  overflow: hidden;
 `;
 
 export const Options = styled.View`

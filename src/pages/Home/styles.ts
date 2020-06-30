@@ -26,11 +26,11 @@ export const Title = styled.Text`
 `;
 
 export const Footer = styled.ImageBackground`
-  align-items: center;
-  justify-content: flex-end;
   height:509px;
   width: 447px;
-  padding: 0 24px;
+  position: absolute;
+  left: 10%;
+  top: 50%;
 `;
 
 export const Button = styled.TouchableOpacity`
