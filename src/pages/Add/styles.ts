@@ -100,3 +100,20 @@ export const Rating = styled.Text`
   font-size: 18px;
   text-align: center;
   `;
+
+export const SubmitButton = styled.TouchableOpacity`
+  flex-direction: row;
+  width: 100%;
+  background: ${colors.secondary};
+  border-radius: 8px;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const SubmitButtonText = styled.Text`
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 10px;
+`;

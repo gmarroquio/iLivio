@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity, ScrollView, Alert } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import MapView, { Marker, MapEvent, LatLng } from "react-native-maps";
-import * as Location from "expo-location";
-import { SvgXml } from "react-native-svg";
+import { SvgUri } from "react-native-svg";
+import firebase from "../../config/firebase";
 
 import CheckBox from "../../components/Checkbox";
 import colors from "../../styles/colors";
@@ -13,7 +13,6 @@ import {
   Container,
   Header,
   MapContainer,
-  Img,
   Options,
   Option,
   OptionText,
@@ -21,55 +20,36 @@ import {
   Currency,
   Price,
   Name,
-  Rating,
+  SubmitButton,
+  SubmitButtonText,
 } from "./styles";
 
-import paperIcon from "../../assets/toilet-paper.svg";
-import disabledIcon from "../../assets/disabled.svg";
-import manIcon from "../../assets/man-sign.svg";
-import womanIcon from "../../assets/woman-sign.svg";
-import showerIcon from "../../assets/shower.svg";
-import urinalIcon from "../../assets/urinal.svg";
+interface Filter {
+  id: number;
+  name: string;
+  key: string;
+  url?: string;
+}
 
 const Add: React.FC = () => {
   const navigation = useNavigation();
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const route = useRoute();
+  const [name, setName] = useState<string>();
+  const [price, setPrice] = useState<number>(0);
   const [location, setLocation] = useState<LatLng>();
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const [options, setOptions] = useState([
-    { name: "Papel", key: "paper", icon: paperIcon },
-    { name: "Masculino", key: "male", icon: manIcon },
-    { name: "Feminino", key: "female", icon: womanIcon },
-    { name: "PCD", key: "disabled", icon: disabledIcon },
-    { name: "Mictorio", key: "urinal", icon: urinalIcon },
-    { name: "Chuveiro", key: "shower", icon: showerIcon },
-  ]);
+  const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
+  const [options, setOptions] = useState<Filter[]>([]);
   const [initialPosition, setInitialPosition] = useState<[number, number]>([
     0,
     0,
   ]);
 
   useEffect(() => {
-    const loadPos = async () => {
-      const { status } = await Location.requestPermissionsAsync();
-
-      if (status !== "granted") {
-        Alert.alert("Ooooops.....", "Precisamos da sua permissão");
-        return;
-      }
-
-      // const location = await Location.getCurrentPositionAsync();
-
-      // const { latitude, longitude } = location.coords;
-      // setInitialPosition([latitude, longitude]);
-      setInitialPosition([-20.8368359, -41.1270382]);
-    };
-
-    loadPos();
+    setOptions(route.params.filters);
+    setInitialPosition(route.params.pos);
   }, []);
 
-  const handleCheck = (option: string) => {
+  const handleCheck = (option: number) => {
     const index = selectedOptions.findIndex((item) => item === option);
     if (index >= 0) {
       const filtered = selectedOptions.filter((item) => item !== option);
@@ -82,12 +62,29 @@ const Add: React.FC = () => {
   const handleChangeName = (e: string) => {
     setName(e);
   };
-  const handleChangePrice = (e: string) => {
+  const handleChangePrice = (e: number) => {
     setPrice(e);
   };
 
   const handleSetLocation = (e: MapEvent) => {
     setLocation(e.nativeEvent.coordinate);
+  };
+
+  const handleSubmit = () => {
+    if (name && location && selectedOptions.length > 0)
+      firebase
+        .firestore()
+        .collection("points")
+        .add({
+          locale: [location?.latitude, location?.longitude],
+          name,
+          options: selectedOptions.sort((a, b) => a - b),
+          price,
+        })
+        .then(navigation.goBack);
+    else {
+      Alert.alert("Preencha todos os campos");
+    }
   };
 
   return (
@@ -98,8 +95,11 @@ const Add: React.FC = () => {
         </TouchableOpacity>
       </Header>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Name onChangeText={handleChangeName} />
-        <Img />
+        <Name
+          onChangeText={handleChangeName}
+          placeholder="Nome"
+          placeholderTextColor="#fffa"
+        />
         <MapContainer>
           {initialPosition[0] !== 0 && (
             <MapView
@@ -126,16 +126,16 @@ const Add: React.FC = () => {
           {options.map((option) => (
             <Option key={option.name}>
               <CheckBox
-                value={selectedOptions.includes(option.key)}
+                value={selectedOptions.includes(option.id)}
                 size={36}
                 borderColor="transparent"
                 checkColor={colors.primary}
                 backgroundColor={colors.background}
-                onPress={() => handleCheck(option.key)}
+                onPress={() => handleCheck(option.id)}
               />
-              <SvgXml
+              <SvgUri
                 style={{ marginLeft: 5 }}
-                xml={option.icon}
+                uri={option.url}
                 height={40}
                 width={40}
               />
@@ -147,7 +147,9 @@ const Add: React.FC = () => {
           <Currency>R$</Currency>
           <Price keyboardType="numeric" onChangeText={handleChangePrice} />
         </PriceWrapper>
-        <Rating>5/5</Rating>
+        <SubmitButton onPress={handleSubmit}>
+          <SubmitButtonText>Adicionar</SubmitButtonText>
+        </SubmitButton>
       </ScrollView>
     </Container>
   );

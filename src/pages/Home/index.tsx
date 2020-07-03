@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { View } from "react-native";
+import firebase from "../../config/firebase";
 
 import {
   Container,
@@ -14,7 +15,6 @@ import {
 
 const Home: React.FC = () => {
   const navigation = useNavigation();
-
   return (
     <Container>
       <Header>

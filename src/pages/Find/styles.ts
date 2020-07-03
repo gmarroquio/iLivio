@@ -49,5 +49,6 @@ export const Filter = styled.TouchableOpacity<Filter>`
 export const FilterText = styled.Text`
   color: #fff;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 12px;
+  margin-top: 5px;
 `;
